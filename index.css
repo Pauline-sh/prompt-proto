@@ -1,9 +1,12 @@
 html {
-  --header-heigth: 50px;
+  --header-height: 50px;
+  --toolbar-height: 50px;
+  --prompt-height: 40px;
+  --footer-height: calc(var(--toolbar-height) + var(--prompt-height));
   --font-size: 30px;
   --line-height: 34px;
   --vh: 1;
-  --keyboard-height: 268px;
+  --keyboard-height: 300px;
 }
 
 html, body {
@@ -35,7 +38,7 @@ main {
 #header {
   width: 100%;
   background-color: pink;
-  height: var(--header-heigth);
+  height: var(--header-height);
 
   position: absolute;
   top: 0;
@@ -46,9 +49,9 @@ main {
 }
 
 #editor {
-  margin-top: var(--header-heigth);
+  margin-top: var(--header-height);
   width: 100%;
-  height: calc(100% - var(--header-heigth));
+  height: calc(100% - var(--header-height) - var(--footer-height));
   overflow-y: scroll;
   flex-grow: 1;
   outline: none;
@@ -60,11 +63,11 @@ main {
 
 #toolbar-container {
   position: absolute;
-  bottom: 40px;
+  bottom: var(--prompt-height);
   left: 0;
   width: 100%;
 
-  height: 50px;
+  height: var(--toolbar-height);
   font-size: 20px;
 
   background-color: rgb(86, 84, 90);
@@ -87,7 +90,7 @@ main {
   left: 0;
   width: 100%;
   background-color: pink;
-  height: 40px;
+  height: var(--prompt-height);
 }
 
 @keyframes blink_input_opacity_to_prevent_scrolling_when_focus {
