@@ -51,15 +51,17 @@ function updateKeyboardHeight() {
 }
 
 window.visualViewport.addEventListener('resize',
-  async () => {
+  () => {
     if (window.visualViewport.height < window.innerHeight) {
-      document.body.classList.add('keyboard-opened');
-      isKeyboardOpened = true;
+      console.log('resize');
 
       if (isKeyboardOpened) {
         return;
       }
 
+      document.body.classList.add('keyboard-opened');
+      isKeyboardOpened = true;
+      updateKeyboardHeight();
       handleVirtualKeyboardOpened();
     } else {
       isKeyboardOpened = false;
@@ -67,7 +69,7 @@ window.visualViewport.addEventListener('resize',
     }
   });
 
-async function handleVirtualKeyboardOpened() {
+function handleVirtualKeyboardOpened() {
   const KEYBOARD_TOP = window.innerHeight - KEYBOARD_HEIGHT;
   let scrollDistance = caretBcr.bottom - KEYBOARD_TOP;
 
@@ -76,6 +78,7 @@ async function handleVirtualKeyboardOpened() {
   }
 
   scrollDistance = Math.ceil(scrollDistance);
+  console.log(scrollDistance);
 
   if (scrollDistance > 0) {
     editor.scrollTo({

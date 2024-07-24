@@ -54,7 +54,7 @@ main {
   outline: none;
 }
 
-.keyboard-opened #editor div {
+.keyboard-opened #editor div:last-child {
   padding-bottom: var(--keyboard-height);
 }
 
