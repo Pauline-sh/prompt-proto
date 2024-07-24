@@ -1,28 +1,44 @@
 let KEYBOARD_HEIGHT;
 let isKeyboardOpened = false;
+let isEditorFocused = false;
 
 let caretBcr;
 let touchY;
 
 const editor = document.querySelector('#editor');
 const header = document.querySelector('#header');
+const prompt_ = document.querySelector('#prompt');
+
+// нажали на промпт - поднялся промпт, тулбар не видно
+prompt_.addEventListener('focus', () => {
+  document.body.classList.add('prompt-focused');
+});
+prompt_.addEventListener('blur', () => {
+  document.body.classList.remove('prompt-focused');
+});
 
 // блокирует проскролл от вебкита при открытии клавиатуры
 editor.addEventListener('focus', () => {
+  isEditorFocused = true;
   editor.classList.add('input--focused');
+  document.body.classList.add('editor-focused');
 
   window.setTimeout(() => {
     editor.classList.remove('input--focused');
-  }, 10);
+  }, 100);
 });
 
-// блокирует скролл по хедеру - но вообще должен блокироваться проскролл любого
-// элемента кроме редактора
-// иначе touchstart по кнопке приведет к тому же самому
-header.addEventListener('touchstart', (e) => {
-  e.preventDefault();
-  e.stopPropagation();
+editor.addEventListener('blur', () => {
+  isEditorFocused = false;
+  document.body.classList.remove('editor-focused');
 });
+
+// блокирует скролл по хедеру
+// но также блокирует скрытие клавиатуры :(
+// header.addEventListener('touchstart', (e) => {
+//   e.preventDefault();
+//   e.stopPropagation();
+// });
 
 // не блокирует скролл(
 // document.body.addEventListener('touchstart', (e) => {
@@ -53,8 +69,6 @@ function updateKeyboardHeight() {
 window.visualViewport.addEventListener('resize',
   () => {
     if (window.visualViewport.height < window.innerHeight) {
-      console.log('resize');
-
       if (isKeyboardOpened) {
         return;
       }
@@ -62,7 +76,9 @@ window.visualViewport.addEventListener('resize',
       document.body.classList.add('keyboard-opened');
       isKeyboardOpened = true;
       updateKeyboardHeight();
-      handleVirtualKeyboardOpened();
+      if (isEditorFocused) {
+        handleVirtualKeyboardOpened();
+      }
     } else {
       isKeyboardOpened = false;
       document.body.classList.remove('keyboard-opened');
@@ -78,7 +94,6 @@ function handleVirtualKeyboardOpened() {
   }
 
   scrollDistance = Math.ceil(scrollDistance);
-  console.log(scrollDistance);
 
   if (scrollDistance > 0) {
     editor.scrollTo({

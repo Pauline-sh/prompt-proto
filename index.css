@@ -60,7 +60,7 @@ main {
 
 #toolbar-container {
   position: absolute;
-  bottom: 0;
+  bottom: 40px;
   left: 0;
   width: 100%;
 
@@ -81,13 +81,13 @@ main {
   height: 100%;
 }
 
-#footer {
+#prompt {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
   background-color: pink;
-  height: 60px;
+  height: 40px;
 }
 
 @keyframes blink_input_opacity_to_prevent_scrolling_when_focus {
@@ -97,4 +97,12 @@ main {
 
 .input--focused {
     animation: blink_input_opacity_to_prevent_scrolling_when_focus 1ms;
+}
+
+.editor-focused #toolbar-container {
+  bottom: 0;
+}
+
+.prompt-focused #toolbar-container {
+  display: none;
 }
