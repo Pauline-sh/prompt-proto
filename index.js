@@ -8,6 +8,26 @@ let touchY;
 const editor = document.querySelector('#editor');
 const header = document.querySelector('#header');
 const prompt_ = document.querySelector('#prompt');
+const toolbar = document.querySelector('#toolbar-container');
+
+// блокирует скролл по тулбару
+toolbar.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+})
+
+// блокирует скролл по хедеру
+header.addEventListener('touchmove', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+});
+
+// блокирует скролл документа
+// но с задержкой и видимыми артефактами
+window.addEventListener('scroll', (e) => {
+  e.preventDefault();
+  window.scrollTo(0, 0);
+});
 
 // нажали на промпт - поднялся промпт, тулбар не видно
 prompt_.addEventListener('focus', () => {
@@ -31,26 +51,6 @@ editor.addEventListener('focus', () => {
 editor.addEventListener('blur', () => {
   isEditorFocused = false;
   document.body.classList.remove('editor-focused');
-});
-
-// блокирует скролл по хедеру
-// но также блокирует скрытие клавиатуры :(
-// header.addEventListener('touchstart', (e) => {
-//   e.preventDefault();
-//   e.stopPropagation();
-// });
-
-// не блокирует скролл(
-// document.body.addEventListener('touchstart', (e) => {
-//   e.preventDefault();
-//   e.stopPropagation();
-// });
-
-// блокирует скролл документа
-// но с задержкой и видимыми артефактами
-window.addEventListener('scroll', (e) => {
-  e.preventDefault();
-  window.scrollTo(0, 0);
 });
 
 // сохраняем на случай если надо выскроллить контент из под клавиатуры
@@ -93,7 +93,7 @@ function handleVirtualKeyboardOpened() {
     scrollDistance -= caretBcr.height;
   }
 
-  scrollDistance = Math.ceil(scrollDistance);
+  scrollDistance = Math.ceil(scrollDistance) + 50;
 
   if (scrollDistance > 0) {
     editor.scrollTo({
